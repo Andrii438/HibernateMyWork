@@ -1,6 +1,10 @@
 package com.andrii.entity;
 
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -12,6 +16,18 @@ public class Reader {
     private Long id;
     @Column(name = "name")
     private String name;
+    @OneToMany(mappedBy = "reader",fetch = FetchType.EAGER)
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    private List<Review>reviews=new ArrayList<>();
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(Review review) {
+        this.reviews.add(review);
+        review.setReader(this);
+    }
 
     public Reader(String name) {
         this.name = name;
